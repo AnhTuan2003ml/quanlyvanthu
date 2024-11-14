@@ -13,9 +13,16 @@ const app = express();
 
 // Middleware cấu hình body-parser
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname)));
-// Cung cấp các tệp tĩnh từ thư mục 'doc'
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use('/BS3', express.static(path.join(__dirname, 'BS3')));
+app.use('/css', express.static(path.join(__dirname, 'css')));
+app.use('/data', express.static(path.join(__dirname, 'data')));
 app.use('/doc', express.static(path.join(__dirname, 'doc')));
+app.use('/documentation', express.static(path.join(__dirname, 'documentation')));
+app.use('/examples', express.static(path.join(__dirname, 'examples')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
+
 
 
 app.use(express.json());
