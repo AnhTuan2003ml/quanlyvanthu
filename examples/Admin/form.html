@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Form</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2>User Form</h2>
+        <form id="userForm">
+            <input type="hidden" id="userId" value="">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone:</label>
+                <input type="text" class="form-control" id="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" class="form-control" id="address">
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="position">Position:</label>
+                <input type="text" class="form-control" id="position" required>
+            </div>
+            <div class="form-group">
+                <label for="isAdmin">Admin:</label>
+                <select class="form-control" id="isAdmin">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary" id="submitBtn">Add User</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('userForm').onsubmit = function (event) {
+            event.preventDefault();
+            // Logic to add or update user goes here
+            const id = document.getElementById('userId').value;
+            if (id) {
+                alert(`Updating User ID: ${id}`);
+            } else {
+                alert('Adding new user');
+            }
+            // Clear form
+            clearForm();
+        };
+
+        function clearForm() {
+            document.getElementById('userId').value = '';
+            document.getElementById('name').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('address').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('position').value = '';
+            document.getElementById('isAdmin').value = '0';
+            document.getElementById('submitBtn').innerText = 'Add User';
+        }
+
+        // Optional: Function to pre-fill the form for editing
+        function prefillForm(id, name, phone, address, email, position, isAdmin) {
+            document.getElementById('userId').value = id;
+            document.getElementById('name').value = name;
+            document.getElementById('phone').value = phone;
+            document.getElementById('address').value = address;
+            document.getElementById('email').value = email;
+            document.getElementById('position').value = position;
+            document.getElementById('isAdmin').value = isAdmin;
+            document.getElementById('submitBtn').innerText = 'Update User';
+        }
+    </script>
+</body>
+
+</html>

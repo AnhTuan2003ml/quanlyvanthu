@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Space Login Form</title>
+	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+	<link
+		href="//fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&amp;subset=latin-ext,vietnamese"
+		rel="stylesheet">
+	<script>
+		// Hàm băm mật khẩu sử dụng SHA-256 (Frontend)
+			async function hashPassword(password) {
+				const msgUint8 = new TextEncoder().encode(password); // Chuyển đổi chuỗi thành Uint8Array
+				const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8); // Tính toán băm SHA-256
+				const hashArray = Array.from(new Uint8Array(hashBuffer)); // Chuyển đổi buffer thành mảng
+				const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); // Chuyển đổi thành chuỗi hexa
+				return hashHex;
+			}
+
+
+		async function handleLogin(event) {
+			event.preventDefault(); // Ngăn chặn gửi biểu mẫu mặc định
+
+			const email = document.querySelector('input[name="Email"]').value;
+			const password = document.querySelector('input[name="Password"]').value;
+			const hashedPassword = await hashPassword(password);
+			const loginData = {
+				email: email,
+				password: hashedPassword
+			};
+
+			// Gửi dữ liệu đăng nhập tới máy chủ
+			fetch('/login', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(loginData)
+			})
+				.then(response => response.json())
+				.then(data => {
+					if (data.success) {
+						// Kiểm tra role trả về từ server
+						if (data.role === 'admin') {
+							window.location.href = "examples\\Admin\\dashboard.html"; // Chuyển đến trang admin
+						} else {
+							window.location.href = "examples\\Users\\dashboard.html"; // Chuyển đến trang người dùng thường
+						}							
+					} else {
+						alert(data.message || "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.");
+					}
+				})
+				.catch(error => console.error("Lỗi:", error));
+		}
+
+
+		// Hàm xóa dữ liệu trong các ô nhập liệu
+		function clearForm() {
+			document.querySelector('input[name="Email"]').value = '';
+			document.querySelector('input[name="Password"]').value = '';
+		}
+	</script>
+
+</head>
+
+<body>
+	<div class="main">
+		<div class="main-w3l">
+			<h1 class="logo-w3">Space Login Form</h1>
+			<div class="w3layouts-main">
+				<form onsubmit="handleLogin(event)">
+					<input placeholder="Username or Email" name="Email" type="email" required="">
+					<input placeholder="Password" name="Password" type="password" required="">
+					<input type="submit" value="Get Started" name="login">
+				</form>
+				<h6><a href="#">Lost Your Password?</a></h6>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
